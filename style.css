@@ -1,227 +1,276 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --primario: #fff;
-    --fondo: #ffebf2; 
-    --fondo-sobre: #ffe3ed; 
-    --solapa-sobre: #ffccd5; 
-    --cuerpo-sobre: #ffc1d1; 
-    --sombra: rgba(0, 0, 0, 0.2);
-    --texto: #003049; 
-    --corazon: #ff477e; 
+  --primario: #fff;
+  --fondo: #ffebf2;
+  --fondo-sobre: #ffe3ed;
+  --solapa-sobre: #ffccd5;
+  --cuerpo-sobre: #ffc1d1;
+  --sombra: rgba(0, 0, 0, 0.2);
+  --texto: #003049;
+  --ancho-sobre: min(400px, calc(100vw - 32px));
+  --alto-sobre: calc(var(--ancho-sobre) * 0.75);
+  --alto-solapa: calc(var(--ancho-sobre) * 0.45);
+  --salida-carta: calc(var(--alto-sobre) * -1.02);
+  --duracion-subida: 0.55s;
+  --duracion-pliegue: 0.9s;
+  --inset-hoja: clamp(12px, 4vw, 20px);
+  --padding-texto: clamp(12px, 3.8vw, 16px);
+  --radio-hoja: 10px;
+  --grosor-punteado: 3px;
+  --reposo-carta: 0px;
+  --font-hoja-size: 14px;
+  --leading-hoja: 1.32;
+  --gap-parrafo: 10px;
 }
 
 body {
-    background: var(--fondo);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
+  background: var(--fondo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100svh;
+  height: auto;
+  padding: clamp(16px, 4svh, 32px) 16px;
+  overflow-x: hidden;
 }
 
 h1 {
-    font-family: "Marck Script", serif; 
-    text-align: center;
-    font-size: 60px;
-    margin-bottom: 50px;
-    color: #444;
+  font-family: "Marck Script", serif;
+  text-align: center;
+  font-size: clamp(40px, 12vw, 60px);
+  margin-bottom: clamp(20px, 6svh, 50px);
+  color: #444;
 }
 
 .contenedor {
-    width: 400px;
+  width: var(--ancho-sobre);
 }
 
 .envoltura-sobre {
-    position: relative;
-    background-color: var(--fondo-sobre);
-    box-shadow: 0 0 40px var(--sombra);
-    border-radius: 15px;
+  position: relative;
+  background-color: var(--fondo-sobre);
+  box-shadow: 0 0 40px var(--sombra);
+  border-radius: 15px;
 }
 
 .sobre {
-    position: relative;
-    width: 400px;
-    height: 300px;
+  position: relative;
+  width: var(--ancho-sobre);
+  height: var(--alto-sobre);
+  border-radius: 10px;
 }
 
 .sobre::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 4;
-    border-top: 180px solid var(--solapa-sobre);
-    border-right: 200px solid transparent;
-    border-left: 200px solid transparent;
-    transform-origin: top;
-    transition: all 0.5s ease-in-out 0.7s;
-    border-radius: 10px;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  border-top: var(--alto-solapa) solid var(--solapa-sobre);
+  border-right: calc(var(--ancho-sobre) * 0.5) solid transparent;
+  border-left: calc(var(--ancho-sobre) * 0.5) solid transparent;
+  transform-origin: top;
+  transition: all 0.5s ease-in-out 0.7s;
+  border-radius: 10px;
 }
 
 .solapa-derecha {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(100% 0, 0 100%, 100% 100%);
-    background-color: var(--cuerpo-sobre);
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  background-color: var(--cuerpo-sobre);
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .solapa-izquierda {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(0 0, 0 100%, 100% 100%);
-    background-color: var(--cuerpo-sobre);
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  background-color: var(--cuerpo-sobre);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .carta {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--primario);
-    text-align: center;
-    box-shadow: 0 0 5px var(--sombra);
-    padding: 20px;
-    border-radius: 10px;
-    transition: transform .5s ease-in-out;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(var(--reposo-carta));
+  transform-style: preserve-3d;
+  transition: transform var(--duracion-subida) ease-in-out;
+  perspective: 1600px;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
-.contenido {
-    font-family: "Gill Sans", Calibri, sans-serif;
-    color: var(--texto);
-    text-align: left;
-    font-size: 12px;
-    border: 3px dotted var(--texto);
-    padding: 10px;
-    height: 100%;
-    line-height: 14px;
-    cursor: pointer;
-    overflow-Y: scroll;
+.panel-carta {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
-.corazon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    background-color: var(--corazon);
-    transform: translate(-50%,0) rotate(45deg);
-    transition: transform 0.5s ease-in-out 1s;
-    z-index: 999;
-    cursor: pointer;
+.panel-superior {
+  top: 0;
+  z-index: 1;
 }
 
-.corazon::before,
-.corazon::after {
-    content: "";
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: var(--corazon);
-    border-radius: 100%;
-
+.panel-inferior {
+  top: 100%;
+  z-index: 2;
+  transform-origin: center top;
+  transform: rotateX(180deg);
+  transition: transform var(--duracion-pliegue) ease-in-out;
 }
 
-.corazon:before {
-    top: -15px;
+.panel-inferior.desplegada {
+  transform: rotateX(0deg);
 }
 
-.corazon:after {
-    right: 15px;
+.cara {
+  position: absolute;
+  inset: 0;
+  background-color: var(--primario);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 0 5px var(--sombra);
+  overflow: hidden;
 }
 
-/*Agregar clases dinamicos*/
+.panel-superior .cara-frontal {
+  border-top-left-radius: var(--radio-hoja);
+  border-top-right-radius: var(--radio-hoja);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.panel-inferior .cara-frontal,
+.panel-inferior .cara-trasera {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--radio-hoja);
+  border-bottom-right-radius: var(--radio-hoja);
+}
+
+.cara-trasera {
+  transform: rotateX(180deg);
+  background-color: var(--primario);
+}
+
+.viewport-hoja {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hoja-larga {
+  position: absolute;
+  left: var(--inset-hoja);
+  top: var(--inset-hoja);
+  width: calc(100% - (var(--inset-hoja) * 2));
+  height: calc(200% - (var(--inset-hoja) * 2));
+  border: var(--grosor-punteado) dotted var(--texto);
+  border-radius: var(--radio-hoja);
+  padding: var(--padding-texto);
+  color: var(--texto);
+  font-family: "Gill Sans", Calibri, sans-serif;
+  font-size: var(--font-hoja-size);
+  line-height: var(--leading-hoja);
+  text-align: left;
+  background: transparent;
+}
+
+.hoja-larga.inferior {
+  top: calc(-100% + var(--inset-hoja));
+}
+
+.texto-hoja p + p {
+  margin-top: var(--gap-parrafo);
+}
+
+.texto-hoja code {
+  color: var(--texto);
+  font-size: 1.02em;
+}
+
+.postdata {
+  font-size: 0.92em;
+  color: #6f6f6f;
+}
+
+.sello {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 66px;
+  height: 66px;
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 50% 23%, #fff5f9 0 10px, #ff7aa7 11px, transparent 12px),
+    radial-gradient(circle at 77% 43%, #fff5f9 0 10px, #ff7aa7 11px, transparent 12px),
+    radial-gradient(circle at 66% 73%, #fff5f9 0 10px, #ff7aa7 11px, transparent 12px),
+    radial-gradient(circle at 34% 73%, #fff5f9 0 10px, #ff7aa7 11px, transparent 12px),
+    radial-gradient(circle at 23% 43%, #fff5f9 0 10px, #ff7aa7 11px, transparent 12px),
+    radial-gradient(circle at 50% 51%, #ffe066 0 8px, #e6a400 9px, transparent 10px);
+  filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.24));
+  transform: translate(-50%, -5%) rotate(-10deg);
+  transition: transform 0.5s ease-in-out 1s;
+  z-index: 999;
+  cursor: pointer;
+}
+
 .abierto .sobre::before {
-    transform: rotateX(180deg);
-    z-index: 0;
+  transform: rotateX(180deg);
+  z-index: 0;
 }
 
-.abierto .corazon {
-    transform: rotate(90deg);
-    transition-delay: 0.4s;
+.abierto .sello {
+  transform: translate(-50%, -5%) rotate(68deg) scale(1.04);
+  transition-delay: 0.4s;
 }
 
-.carta.mostrar-carta {
-    transform: translateY(-290px);
-    transition: transform .5s ease-in-out;
-}
-
-.carta.cerrando-carta {
-    transform: translateY(-290px);
-    transition: transform .5s ease-in-out;
+.carta.mostrar-carta,
+.carta.abierta {
+  transform: translateY(calc(var(--salida-carta) + var(--reposo-carta)));
+  overflow: visible;
 }
 
 .carta.abierta {
-    z-index: 10000;
+  z-index: 10000;
 }
 
 .envoltura-sobre.desactivar-sobre .sobre::before {
-    pointer-events: none;
+  pointer-events: none;
 }
 
-/*Scroll personalizado*/
+@media (max-width: 420px) {
+  :root {
+    --salida-carta: calc(var(--alto-sobre) * -1.06);
+    --inset-hoja: 12px;
+    --padding-texto: 12px;
+  }
 
-/*
-::-webkit-scrollbar {
-    width: 8px;
+  .hoja-larga {
+    line-height: 1.3;
+  }
 }
-
-::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--cuerpo-sobre);
-    border-radius: 4px;
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--corazon);
-}
-*/
-
-/*Vista celular*/
-
-@media screen and (max-width:400px) {
-    .contenedor {
-        width: 300px;
-    }
-
-    .sobre {
-        width: 300px;
-        height: 250px;
-    }
-
-    .sobre::before {
-        border-top:150px solid var(--solapa-sobre) ;
-        border-right: 150px solid transparent;
-        border-left: 150px solid transparent;
-    }
-
-}
-
-
-
-
-
-
